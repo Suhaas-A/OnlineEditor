@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-^niv%dc4$7y4xxh)u=c&5xbncva2tou9r4s@#393j3x2cgev9+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -144,7 +144,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'authorisation.Users'
 
 CORS_ALLOWED_ORIGINS = [
-    'http://localhost:5173'
+    'https://online-editor-nine.vercel.app/'
 ]
 
 APPEND_SLASH = False
