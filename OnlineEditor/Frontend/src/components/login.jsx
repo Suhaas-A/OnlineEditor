@@ -167,6 +167,7 @@ function Login() {
                                 fullWidth
                                 label="Password"
                                 placeholder="Password"
+                                type="password"
                                 col
                                 InputProps={{
                                     startAdornment: (
@@ -250,6 +251,7 @@ function Login() {
                                     <TextField
                                         label="New Password"
                                         placeholder="New Password"
+                                        type="password"
                                         fullWidth
                                         multiline
                                         value={newPassword}
@@ -275,6 +277,7 @@ function Login() {
                                     <TextField
                                         label="New Password Again"
                                         placeholder="New Password Again"
+                                        type="password"
                                         fullWidth
                                         multiline
                                         value={newPasswordAgain}
