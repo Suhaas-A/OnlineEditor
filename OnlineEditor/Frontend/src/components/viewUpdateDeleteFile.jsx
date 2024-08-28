@@ -59,18 +59,18 @@ function ViewUpdateDeleteFile() {
     }
 
     function changeStyles(attr, value) {
-        let x = {};
-        x.fontSize = styles.fontSize;
-        x.fontStyle = styles.fontStyle;
-        x.fontWeight = styles.fontWeight;
-        x.height = styles.height;
-        x.textDecorationLine = styles.textDecorationLine;
-        x.width = styles.width;
-        x[attr] = value;
-
-        setStyles(x);
-
         try {
+            let x = {};
+            x.fontSize = styles.fontSize;
+            x.fontStyle = styles.fontStyle;
+            x.fontWeight = styles.fontWeight;
+            x.height = styles.height;
+            x.textDecorationLine = styles.textDecorationLine;
+            x.width = styles.width;
+            x[attr] = value;
+    
+            setStyles(x);
+            
             axios.patch('https://OnlineEditorMaster.pythonanywhere.com/api/view_update_delete_files/' + String(id), {'styles': x}, {
                 headers: {
                     Authorization: `Bearer ${sessionStorage.accessToken}`
