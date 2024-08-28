@@ -56,7 +56,6 @@ function Register() {
                 'password': password,
                 'email': email
             }).then((response) => {
-                window.location = '/login';
                 console.log(response);
                 setAlert(true);
                 let data = response.data;
