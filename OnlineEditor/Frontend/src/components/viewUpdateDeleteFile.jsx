@@ -11,26 +11,51 @@ function ViewUpdateDeleteFile() {
     const [goUpdate, setGoUpdate] = useState(0);
     const { id } = useParams();
 
+    async function changeAccessToken() {
+        try {
+            let response = await axios.post('https://OnlineEditorMaster.pythonanywhere.com/api/login/refresh/', {
+                'refresh': `${sessionStorage.refreshToken}`
+            });
+
+            let data = await response.data
+
+            sessionStorage.setItem('accessToken', data['access']);
+
+            window.location.reload();
+        } catch (error) {
+            window.location.href = '/login';
+            console.log(error);
+        }
+    }
+
     async function view() {
-        const response = await axios.get('https://OnlineEditorMaster.pythonanywhere.com/api/view_update_delete_files/' + String(id), {
-            headers: {
-                Authorization: `Bearer ${sessionStorage.accessToken}`
-            }
-        });
+        try {
+            const response = await axios.get('https://OnlineEditorMaster.pythonanywhere.com/api/view_update_delete_files/' + String(id), {
+                headers: {
+                    Authorization: `Bearer ${sessionStorage.accessToken}`
+                }
+            });
+        } catch (error) {
+            changeAccessToken();
+        }
 
         return response;
     }
 
     async function update(newValue) {
-        axios.patch('https://OnlineEditorMaster.pythonanywhere.com/api/view_update_delete_files/' + String(id), {'content': newValue != '' ? newValue : null}, {
-            headers: {
-                Authorization: `Bearer ${sessionStorage.accessToken}`
-            }
-        }).then((response) => {
-            console.log(response.data.content);
-        }).catch((error) => {
-            console.log(error);
-        });
+        try {
+            axios.patch('https://OnlineEditorMaster.pythonanywhere.com/api/view_update_delete_files/' + String(id), {'content': newValue != '' ? newValue : null}, {
+                headers: {
+                    Authorization: `Bearer ${sessionStorage.accessToken}`
+                }
+            }).then((response) => {
+                console.log(response.data.content);
+            }).catch((error) => {
+                console.log(error);
+            });
+        } catch (error) {
+            changeAccessToken();
+        }
     }
 
     function changeStyles(attr, value) {
@@ -45,27 +70,35 @@ function ViewUpdateDeleteFile() {
 
         setStyles(x);
 
-        axios.patch('https://OnlineEditorMaster.pythonanywhere.com/api/view_update_delete_files/' + String(id), {'styles': x}, {
-            headers: {
-                Authorization: `Bearer ${sessionStorage.accessToken}`
-            }
-        }).then((response) => {
-            console.log(response);
-            setGoUpdate(response);
-        }).catch((error) => {
-            console.log(error);
-        });
+        try {
+            axios.patch('https://OnlineEditorMaster.pythonanywhere.com/api/view_update_delete_files/' + String(id), {'styles': x}, {
+                headers: {
+                    Authorization: `Bearer ${sessionStorage.accessToken}`
+                }
+            }).then((response) => {
+                console.log(response);
+                setGoUpdate(response);
+            }).catch((error) => {
+                console.log(error);
+            });
+        } catch (error) {
+            changeAccessToken();
+        }
     }
 
     async function del() {
-        axios.delete('https://OnlineEditorMaster.pythonanywhere.com/api/view_update_delete_files/' + String(id), {
-            headers: {
-                Authorization: `Bearer ${sessionStorage.accessToken}`
-            }
-        }).then((response) => {
-            console.log(response);
-            window.location.href = '/create-list-files'
-        })
+        try {
+            axios.delete('https://OnlineEditorMaster.pythonanywhere.com/api/view_update_delete_files/' + String(id), {
+                headers: {
+                    Authorization: `Bearer ${sessionStorage.accessToken}`
+                }
+            }).then((response) => {
+                console.log(response);
+                window.location.href = '/create-list-files'
+            })
+        } catch (error) {
+            changeAccessToken();
+        }
     }
 
     useEffect(() => {
