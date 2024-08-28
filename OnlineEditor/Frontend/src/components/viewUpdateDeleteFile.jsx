@@ -8,7 +8,6 @@ function ViewUpdateDeleteFile() {
     const [content, setContent] = useState('');
     const [fileName, setFileName] = useState('');
     const [styles, setStyles] = useState({});
-    const [goUpdate, setGoUpdate] = useState(0);
     const { id } = useParams();
 
     async function changeAccessToken() {
@@ -77,7 +76,6 @@ function ViewUpdateDeleteFile() {
                 }
             }).then((response) => {
                 console.log(response);
-                setGoUpdate(response);
             }).catch((error) => {
                 console.log(error);
             });
@@ -110,7 +108,7 @@ function ViewUpdateDeleteFile() {
         }).catch((error) => {
             console.log(error);
         })
-    }, [goUpdate])
+    }, [])
 
     return (
         <>
