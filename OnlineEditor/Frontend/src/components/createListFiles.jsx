@@ -12,36 +12,65 @@ function CreateListFiles() {
     const [newName, setNewName] = useState('');
     const [currentFileId, setCurrentFileId] = useState(0);
 
+    async function changeAccessToken() {
+        try {
+            let response = await axios.post('https://OnlineEditorMaster.pythonanywhere.com/api/login/refresh/', {
+                'refresh': `${sessionStorage.refreshToken}`
+            });
+
+            let data = await response.data
+
+            sessionStorage.setItem('accessToken', data['access']);
+
+            window.location.reload();
+        } catch (error) {
+            window.location.href = '/login';
+            console.log(error);
+        }
+    }
+
     async function list() {
-        const response = await axios.get('https://OnlineEditorMaster.pythonanywhere.com/api/list_create_files/', {
-            headers: {
-                Authorization: `Bearer ${sessionStorage.accessToken}`
-            }
-        })
+        try {
+            const response = await axios.get('https://OnlineEditorMaster.pythonanywhere.com/api/list_create_files/', {
+                headers: {
+                    Authorization: `Bearer ${sessionStorage.accessToken}`
+                }
+            })
+        } catch (error) {
+            changeAccessToken();
+        }
 
         return response
     };
 
     async function deleteFile(id) {
-        axios.delete('https://OnlineEditorMaster.pythonanywhere.com/api/view_update_delete_files/' + String(id), {
-            headers: {
-                Authorization: `Bearer ${sessionStorage.accessToken}`
-            }
-        }).then((response) => {
-            console.log(response);
-            window.location.href = '/create-list-files'
-        })
+        try {
+            axios.delete('https://OnlineEditorMaster.pythonanywhere.com/api/view_update_delete_files/' + String(id), {
+                headers: {
+                    Authorization: `Bearer ${sessionStorage.accessToken}`
+                }
+            }).then((response) => {
+                console.log(response);
+                window.location.href = '/create-list-files'
+            })
+        } catch (error) {
+            changeAccessToken();
+        }
     }
 
     async function editFile() {
-        axios.patch('https://OnlineEditorMaster.pythonanywhere.com/api/view_update_delete_files/' + String(currentFileId), {'name': newName}, {
-            headers: {
-                Authorization: `Bearer ${sessionStorage.accessToken}`
-            }
-        }).then((response) => {
-            console.log(response);
-            window.location.href = '/create-list-files'
-        })
+        try {
+            axios.patch('https://OnlineEditorMaster.pythonanywhere.com/api/view_update_delete_files/' + String(currentFileId), {'name': newName}, {
+                headers: {
+                    Authorization: `Bearer ${sessionStorage.accessToken}`
+                }
+            }).then((response) => {
+                console.log(response);
+                window.location.href = '/create-list-files'
+            })
+        } catch (error) {
+            changeAccessToken();
+        }
     }
 
     useEffect(() => {
@@ -55,16 +84,20 @@ function CreateListFiles() {
     }, [goUpdate])
 
     function create() {
-        axios.post('https://OnlineEditorMaster.pythonanywhere.com/api/list_create_files/', {'name': String(fileName), 'created_by': String(sessionStorage.username)}, {
-            headers: {
-                Authorization: `Bearer ${sessionStorage.accessToken}`
-            }
-        }).then((response)=> {
-            setGoUpdate(response)
-        }).catch((error) => {
-            alert(error)
-            console.log({'name': String(fileName), 'created_by': String(sessionStorage.username)});            
-        });
+        try {
+            axios.post('https://OnlineEditorMaster.pythonanywhere.com/api/list_create_files/', {'name': String(fileName), 'created_by': String(sessionStorage.username)}, {
+                headers: {
+                    Authorization: `Bearer ${sessionStorage.accessToken}`
+                }
+            }).then((response)=> {
+                setGoUpdate(response)
+            }).catch((error) => {
+                alert(error)
+                console.log({'name': String(fileName), 'created_by': String(sessionStorage.username)});            
+            });
+        } catch (error) {
+            changeAccessToken();
+        }
     }
 
     return (
