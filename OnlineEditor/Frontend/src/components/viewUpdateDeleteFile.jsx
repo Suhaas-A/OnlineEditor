@@ -35,11 +35,11 @@ function ViewUpdateDeleteFile() {
                     Authorization: `Bearer ${sessionStorage.accessToken}`
                 }
             });
+
+            return response;
         } catch (error) {
             changeAccessToken();
         }
-
-        return response;
     }
 
     async function update(newValue) {
