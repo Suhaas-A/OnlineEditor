@@ -36,11 +36,11 @@ function CreateListFiles() {
                     Authorization: `Bearer ${sessionStorage.accessToken}`
                 }
             })
+
+            return response
         } catch (error) {
             changeAccessToken();
         }
-
-        return response
     };
 
     async function deleteFile(id) {
